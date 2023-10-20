@@ -3,3 +3,4 @@ export const contentType = (request: Request,response: Response,next: NextFuncti
     response.type('json')
     next()
 }
+

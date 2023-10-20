@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import {BycriptAdapter} from "./bcrypt-adapter";
 import {Encrypter} from "../../data/protocols/encrypter";
-import spyOn = jest.spyOn;
 
 const salt = 12
 interface SutTypes {
@@ -21,7 +20,7 @@ jest.mock('bcrypt', () => ({
     }
 }))
 
-describe('Bycript Adapter', () => {
+describe('Bcrypt Adapter', () => {
     test('Should call bcrypt with correct value', async () => {
         const {sut} = makeSut()
         const hashSpy = jest.spyOn(bcrypt, 'hash')
@@ -35,7 +34,7 @@ describe('Bycript Adapter', () => {
         expect(hash).toBe('hash')
     })
 
-    test('Should return a hash on success', async () => {
+    test('Should throw an error when thrown', async () => {
         const {sut} = makeSut()
         jest.spyOn(sut, 'encrypt').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
         const promise = sut.encrypt('any_value')
