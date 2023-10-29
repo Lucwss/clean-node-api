@@ -35,6 +35,15 @@ const makeLogErrorRepository = (): LogErrorRepository => {
     return new LogErrorRepositoryStub()
 }
 
+const makeFakeRequest = (): HttpRequest => ({
+  body: {
+    email: 'any_valid_email@email.com',
+    name: 'any_valid_name',
+    password: 'any_valid_password',
+    passwordConfirmation: 'any_valid_password'
+  }
+})
+
 const makeSut = (): SutTypes =>  {
     const controllerStub = makeController()
     const logErrorRepositoryStub = makeLogErrorRepository()
@@ -50,14 +59,7 @@ const makeSut = (): SutTypes =>  {
 describe('LogContrllerDecorator', () => {
   test('should call controller handle ', async () => {
     const { sut, controllerStub } = makeSut()
-    const htpRequest = {
-      body: {
-        email: 'any_valid_email@email.com',
-        name: 'any_valid_name',
-        password: 'any_valid_password',
-        passwordConfirmation: 'any_valid_password'
-      }
-    }
+    const htpRequest = makeFakeRequest()
     const handleSpy = jest.spyOn(controllerStub, 'handle')
     await sut.handle(htpRequest)
     expect(handleSpy).toHaveBeenCalledWith(htpRequest)
@@ -65,14 +67,7 @@ describe('LogContrllerDecorator', () => {
 
   test('should return the same retult of controller ', async () => {
     const { sut } = makeSut()
-    const htpRequest = {
-      body: {
-        email: 'any_valid_email@email.com',
-        name: 'any_valid_name',
-        password: 'any_valid_password',
-        passwordConfirmation: 'any_valid_password'
-      }
-    }
+    const htpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(htpRequest)
     expect(httpResponse).toEqual({
           statusCode: 200,
@@ -89,14 +84,7 @@ describe('LogContrllerDecorator', () => {
     const error = serverError(fakeError)
     const logSpy = jest.spyOn(logErrorRepositoryStub, 'log')
     jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise(resolve => resolve(error)))
-    const htpRequest = {
-      body: {
-        email: 'any_valid_email@email.com',
-        name: 'any_valid_name',
-        password: 'any_valid_password',
-        passwordConfirmation: 'any_valid_password'
-      }
-    }
+    const htpRequest = makeFakeRequest()
     await sut.handle(htpRequest)
     expect(logSpy).toHaveBeenCalledWith('any_stack')
   })
