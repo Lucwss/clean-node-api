@@ -30,6 +30,8 @@ module.exports = {
     ],
     "rules": {
         "@typescript-eslint/strict-boolean-expressions": "off",
-        "@typescript-eslint/no-var-requires": "off"
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-explicit-any": "off"
     }
 }
